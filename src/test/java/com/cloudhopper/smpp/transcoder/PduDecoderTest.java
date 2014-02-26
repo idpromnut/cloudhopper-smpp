@@ -1312,4 +1312,19 @@ public class PduDecoderTest {
 
         Assert.assertEquals(0, buffer.readableBytes());
     }
+
+    @Test
+    public void decodeOutBind() throws Exception {
+        ChannelBuffer buffer = BufferHelper.createBuffer("000000200000000B000000000003996174776974746572007477697474657200");
+
+        OutBind pdu0 = (OutBind)transcoder.decode(buffer);
+
+        Assert.assertEquals(32, pdu0.getCommandLength());
+        Assert.assertEquals(SmppConstants.CMD_ID_OUTBIND, pdu0.getCommandId());
+        Assert.assertEquals(0, pdu0.getCommandStatus());
+        Assert.assertEquals(235873, pdu0.getSequenceNumber());
+        Assert.assertEquals(true, pdu0.isRequest());
+        Assert.assertEquals("twitter", pdu0.getSystemId());
+        Assert.assertEquals("twitter", pdu0.getPassword());
+    }
 }
