@@ -91,6 +91,19 @@ public class PduEncoderTest {
     }
 
     @Test
+    public void encodeSubmitSmRespWithNoMessageIdWithThrottlingStatus() throws Exception {
+        SubmitSmResp pdu0 = new SubmitSmResp();
+//        pdu0.setCommandLength(16);
+        pdu0.setCommandStatus(SmppConstants.STATUS_THROTTLED);
+        pdu0.setResultMessage("Throttling error");
+        pdu0.setSequenceNumber(31);
+        pdu0.setMessageId(null);
+
+        ChannelBuffer buffer = transcoder.encode(pdu0);
+        Assert.assertArrayEquals(HexUtil.toByteArray("0000001180000004000000000a342ee100"), BufferHelper.createByteArray(buffer));
+    }
+
+    @Test
     public void encodeDeliverSmResp() throws Exception {
         DeliverSmResp pdu0 = new DeliverSmResp();
         pdu0.setSequenceNumber(1141447);
